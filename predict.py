@@ -77,13 +77,9 @@ class SRUModel(nn.Module):
 
 def predict_tweet(text):
   preprocessing_text = preprocess(text)
-  print(preprocessing_text)
   token = preprocessing_text.split()
-  print(token)
   encoded = [word_index.get(word, word_index['<OOV>']) for word in token]
-  print(encoded)
   padded_text = pad_sequences([encoded], maxlen=52, padding='post')
-  print(padded_text)
   input_tensor = torch.tensor(padded_text)
   embedding_matrix = torch.load('embedding_matrix.pth')
 
@@ -94,7 +90,6 @@ def predict_tweet(text):
   with torch.no_grad():
     predictions = model(input_tensor)
 
-  print(predictions)
   predicted = (predictions >= 0.5).float()
   result = ['bully' if predicted else 'not bully']
   return result
@@ -107,4 +102,4 @@ input_text = st.text_area("Masukkan text")
 output = ""
 if st.button("Predict"):
     output = predict_tweet(input_text)
-    st.success(f"Hasil Prediksi {output}")
+    st.success(f"Hasil Prediksi {output[0]}")
