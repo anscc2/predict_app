@@ -102,7 +102,7 @@ form = st.form(key='predict-form')
 user_input = form.text_area("Enter your text")
 submit = form.form_submit_button('Predict')
 if submit:
-  result, score = predict_tweet(user_input)[0]
+  result, score = predict_tweet(user_input)
   if result == 'Bully':
     st.error(f"Hasil Prediksi {result} (score: {score})")
   else:
