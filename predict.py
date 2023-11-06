@@ -101,7 +101,6 @@ st.header('App ini dibuat untuk memprediksi apakah sebuah tweet terindikasi seba
 form = st.form(key='predict-form')
 user_input = form.text_area("Enter your text")
 submit = form.form_submit_button('Predict')
-# output = ""
-# if st.button("Predict"):
-#     output = predict_tweet(input_text)
-#     st.success(f"Hasil Prediksi {output[0]}")
+if submit:
+  result = predict_tweet(user_input)[0]
+  st.success(f"Hasil Prediksi {result}")
