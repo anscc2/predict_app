@@ -92,7 +92,7 @@ def predict_tweet(text):
 
   predicted = (predictions >= 0.5).float()
   result = ['Bully' if predicted else 'Not Bully']
-  return result, predictions
+  return result[0], predictions
 
 
 st.title("Predicting Bully Tweet")
