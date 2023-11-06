@@ -91,7 +91,7 @@ def predict_tweet(text):
     predictions = model(input_tensor)
 
   predicted = (predictions >= 0.5).float()
-  result = ['Bully' if predicted else 'Not Bully']
+  result = ['bully' if predicted else 'not a bully']
   return result[0], predictions.item()
 
 
@@ -103,7 +103,7 @@ user_input = form.text_area("Enter your text")
 submit = form.form_submit_button('Predict')
 if submit:
   result, score = predict_tweet(user_input)
-  if result == 'Bully':
-    st.error(f"Hasil Prediksi: {result} (score: {score})")
+  if result == 'bully':
+    st.error(f"This is a {result} tweet (score: {score})")
   else:
-    st.success(f"Hasil Prediksi: {result} (score: {score})")
+    st.success(f"This is {result} tweet (score: {score})")
