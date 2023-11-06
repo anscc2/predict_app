@@ -92,7 +92,7 @@ def predict_tweet(text):
 
   predicted = (predictions >= 0.5).float()
   result = ['Bully' if predicted else 'Not Bully']
-  return result[0], predictions
+  return result[0], predictions.item()
 
 
 st.title("Predicting Bully Tweet")
@@ -104,6 +104,6 @@ submit = form.form_submit_button('Predict')
 if submit:
   result, score = predict_tweet(user_input)
   if result == 'Bully':
-    st.error(f"Hasil Prediksi {result} (score: {score})")
+    st.error(f"Hasil Prediksi: {result} (score: {score})")
   else:
-    st.success(f"Hasil Prediksi {result}")
+    st.success(f"Hasil Prediksi: {result} (score: {score})")
