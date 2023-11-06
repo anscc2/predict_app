@@ -106,5 +106,5 @@ st.header('App ini dibuat untuk memprediksi apakah sebuah tweet terindikasi seba
 input_text = st.text_area("Masukkan text")
 output = ""
 if st.button("Predict"):
-    output = predict_tweet(text)
+    output = predict_tweet(input_text)
     st.success(f"Hasil Prediksi {output}")
