@@ -98,7 +98,7 @@ def predict_tweet(text):
 st.title("Predicting Bully Tweet")
 st.header('App ini dibuat untuk memprediksi apakah sebuah tweet terindikasi sebagai bully atau tidak')
 
-form = st.form(key='predict-form')
+form = st.form(key='predicting-form')
 user_input = form.text_area("Enter your text")
 submit = form.form_submit_button('Predict')
 if submit:
