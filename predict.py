@@ -80,7 +80,7 @@ def predict_tweet(text):
   input_tensor = torch.tensor(padded_text)
   embedding_matrix = torch.load('embeddings_matrix.pth')
 
-  model = SRUModel(embedding_matrix=embedding_matrix)
+  model = SRUModel(pretrained_embedding=embedding_matrix)
 
   model = torch.load('modelsru-fold-2.pth')
   model.eval()
