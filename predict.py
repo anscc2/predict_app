@@ -47,20 +47,17 @@ def preprocess(text):
   return text
 
 class SRUModel(nn.Module):
-  def __init__(self, embedding_matrix):
+  def __init__(self, pretrained_embedding):
     super(SRUModel, self).__init__()
-    num_words = embedding_matrix.shape[0]
-    embed_dim = embedding_matrix.shape[1]
-    self.embedding = nn.Embedding(num_embeddings=num_words, embedding_dim=embed_dim)
-    self.embedding.weight = nn.Parameter(torch.tensor(embedding_matrix, dtype=torch.float32))
-    self.embedding.weight.requires_grad = False
+    self.vocab_size, self.embed_dim = pretrained_embedding.shape
+    self.embedding = nn.Embedding.from_pretrained(pretrained_embedding, freeze=True)
 
     self.dropout = nn.Dropout(p=0.3)
 
-    self.sru = SRU(input_size=embed_dim, hidden_size=128, dropout=0.3)
+    self.sru = SRU(input_size=embed_dim, hidden_size=150)
     self.avg_pooling = nn.AdaptiveAvgPool1d(1)
     self.max_pooling = nn.AdaptiveMaxPool1d(1)
-    self.fc = nn.Linear(256, 1)
+    self.fc = nn.Linear(300, 1)
     self.sigmoid = nn.Sigmoid()
 
   def forward(self, x):
@@ -81,7 +78,7 @@ def predict_tweet(text):
   encoded = [word_index.get(word, word_index['<OOV>']) for word in token]
   padded_text = pad_sequences([encoded], maxlen=52, padding='post')
   input_tensor = torch.tensor(padded_text)
-  embedding_matrix = torch.load('embedding_matrix.pth')
+  embedding_matrix = torch.load('embeddings_matrix.pth')
 
   model = SRUModel(embedding_matrix=embedding_matrix)
 
@@ -90,7 +87,7 @@ def predict_tweet(text):
   with torch.no_grad():
     predictions = model(input_tensor)
 
-  predicted = (predictions >= 0.5).float()
+  predicted = (predictions > 0.5).float()
   result = ['Bully' if predicted else 'Non Bully']
   return result[0], predictions.item()
 
