@@ -86,15 +86,17 @@ def predict_tweet(text):
   embedding_matrix = torch.load('embeddings_matrix.pth')
 
   model = SRUModel(pretrained_embedding=embedding_matrix)
+  model = model.to(device)
 
-  model = torch.load('modelsru-fold-2.pth')
+  # model = torch.load('modelsru-fold-2.pth')
+  model.load_state_dict(torch.load('modelsru-fold-2.pth'))
   model.eval()
   with torch.no_grad():
     predictions = model(input_tensor)
 
   predicted = (predictions > 0.5).float()
-  result = ['Bully' if predicted else 'Non Bully']
-  return result[0], predictions.item()
+  result = 'Bully' if predicted.item() == 1 else 'Non Bully'
+  return result, predictions.item()
 
 
 st.title("Predicting Bully Tweet")
