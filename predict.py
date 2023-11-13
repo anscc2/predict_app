@@ -9,10 +9,7 @@ from sru import SRU
 import streamlit as st
 import predict
 
-if torch.cuda.is_available():
-  device = torch.device("cuda")
-else:
-  device = torch.device("cpu")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
   
 url_word_index = 'https://raw.githubusercontent.com/anscc2/predict_app/main/data/word_index.json'
 response = requests.get(url_word_index)
@@ -85,10 +82,8 @@ def predict_tweet(text):
   input_tensor = torch.tensor(padded_text).to(device)
   embedding_matrix = torch.load('embeddings_matrix.pth')
 
-  model = SRUModel(pretrained_embedding=embedding_matrix)
-  model = model.to(device)
+  model = SRUModel(pretrained_embedding=embedding_matrix).to(device)
 
-  # model = torch.load('modelsru-fold-2.pth')
   model.load_state_dict(torch.load('modelsru-fold-2.pth'))
   model.eval()
   with torch.no_grad():
