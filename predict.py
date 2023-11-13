@@ -80,11 +80,11 @@ def predict_tweet(text):
   encoded = [word_index.get(word, word_index['<OOV>']) for word in token]
   padded_text = pad_sequences([encoded], maxlen=52, padding='post')
   input_tensor = torch.tensor(padded_text).to(device)
-  embedding_matrix = torch.load('embeddings_matrix.pth')
+  embedding_matrix = torch.load('embeddings_matrix.pth', map_location=device)
 
   model = SRUModel(pretrained_embedding=embedding_matrix).to(device)
 
-  model.load_state_dict(torch.load('modelsru-fold-2.pth'))
+  model.load_state_dict(torch.load('modelsru-fold-2.pth', map_location=device))
   model.eval()
   with torch.no_grad():
     predictions = model(input_tensor)
