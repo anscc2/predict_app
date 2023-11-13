@@ -54,10 +54,10 @@ class SRUModel(nn.Module):
 
     self.dropout = nn.Dropout(p=0.3)
 
-    self.sru = SRU(input_size=self.embed_dim, hidden_size=150)
+    self.sru = SRU(input_size=self.embed_dim, hidden_size=128, num_layers=1)
     self.avg_pooling = nn.AdaptiveAvgPool1d(1)
     self.max_pooling = nn.AdaptiveMaxPool1d(1)
-    self.fc = nn.Linear(300, 1)
+    self.fc = nn.Linear(256, 1)
     self.sigmoid = nn.Sigmoid()
 
   def forward(self, x):
