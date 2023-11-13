@@ -9,6 +9,11 @@ from sru import SRU
 import streamlit as st
 import predict
 
+if torch.cuda.is_available():
+  device = torch.device("cuda")
+else:
+  device = torch.device("cpu")
+  
 url_word_index = 'https://raw.githubusercontent.com/anscc2/predict_app/main/data/word_index.json'
 response = requests.get(url_word_index)
 word_index = response.json()
@@ -77,7 +82,7 @@ def predict_tweet(text):
   token = preprocessing_text.split()
   encoded = [word_index.get(word, word_index['<OOV>']) for word in token]
   padded_text = pad_sequences([encoded], maxlen=52, padding='post')
-  input_tensor = torch.tensor(padded_text)
+  input_tensor = torch.tensor(padded_text).to(device)
   embedding_matrix = torch.load('embeddings_matrix.pth')
 
   model = SRUModel(pretrained_embedding=embedding_matrix)
